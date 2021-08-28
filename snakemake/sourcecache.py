@@ -82,6 +82,8 @@ class SourceCache:
             return io.BytesIO(git_content(path_or_uri).encode())
 
         try:
-            return open(path_or_uri, mode, encoding=encoding)
+            if encoding:
+                return open(path_or_uri, mode, encoding=encoding)
+            return open(path_or_uri, mode)
         except Exception as e:
             raise WorkflowError("Failed to open source file {}".format(path_or_uri), e)
