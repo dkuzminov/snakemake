@@ -45,7 +45,7 @@ class SourceCache:
 
     def open(self, path_or_uri, mode="r"):
         cache_entry = self._cache(path_or_uri)
-        return self._open(cache_entry, mode, encoding="utf-8")
+        return self._open(cache_entry, mode, encoding=None)
 
     def get_path(self, path_or_uri, mode="r"):
         cache_entry = self._cache(path_or_uri)
@@ -82,8 +82,6 @@ class SourceCache:
             return io.BytesIO(git_content(path_or_uri).encode())
 
         try:
-            if encoding:
-                return open(path_or_uri, mode, encoding=encoding)
-            return open(path_or_uri, mode)
+            return open(path_or_uri, mode, encoding=encoding)
         except Exception as e:
             raise WorkflowError("Failed to open source file {}".format(path_or_uri), e)
